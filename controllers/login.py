@@ -2,10 +2,11 @@ from controllers.user import *
 from standards import *
 
 
+# Function to handle user login
 def check_login():
     if request.method == 'POST':
         username = request.form['username']
-        password = request.form['password'].encode('utf-8')
+        password = request.form['password'].encode('utf-8')  # Password encoded to bytes
         conn, cursor = db_connect()
         cursor.execute("SELECT * FROM Gebruikers WHERE gebruikersnaam = ?", (username,))
         user_tuple = cursor.fetchone()
@@ -14,12 +15,17 @@ def check_login():
 
         if user_tuple:
             stored_password = user_tuple[2]
+
+            # If stored password is hashed and salted
             if isinstance(stored_password, bytes):
+                # bcrypt.checkpw compares the provided password with the hashed password stored in the database
                 password_matches = bcrypt.checkpw(password, stored_password)
             else:
+                # Handle legacy passwords (if they are not hashed and salted yet)
                 password_matches = password == stored_password.encode('utf-8')
 
             if password_matches:
+                # Password is correct, proceed with login
                 session['user_id'] = user_tuple[0]
                 rol = user_tuple[3]
 
@@ -51,12 +57,14 @@ def check_login():
     return render_template('login.html')
 
 
+# Function to handle user registration (where hashing and salting are applied)
 def check_register():
     if request.method == 'POST':
         voornaam = request.form['voornaam']
         achternaam = request.form['achternaam']
         gebruikersnaam = request.form['gebruikersnaam']
         wachtwoord = request.form['wachtwoord']
+        # bcrypt.hashpw hashes and salts the password before storing it
         hashed_password = bcrypt.hashpw(wachtwoord.encode(), bcrypt.gensalt())
         postcode = request.form['postcode']
         geslacht = request.form['geslacht']
@@ -73,6 +81,7 @@ def check_register():
         beschikbaarheid = request.form['beschikbaarheid']
         type_beperking = request.form['type_beperking']
 
+        # Save the user with the hashed and salted password
         register_er_user(voornaam, achternaam, gebruikersnaam, hashed_password, postcode, geslacht, emailadres,
                          telefoonnummer, geboortedatum, bijzonderheden, toezichthouder, toezichthouder_naam,
                          toezichthouder_emailadres, toezichthouder_telefoonnummer, benadering, type_onderzoek,
