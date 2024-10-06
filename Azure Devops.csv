@@ -1,0 +1,10 @@
+﻿ID,Work Item Type,Title,Assigned To,State,Tags
+"330","Product Backlog Item","Issues 1.1 - Backlogs aanmaken","Mikail Köker (1022063) <1022063@hr.nl>","Done",
+"332","Product Backlog Item","Issues 1.2 - User storys maken","Mikail Köker (1022063) <1022063@hr.nl>","Done",
+"333","Product Backlog Item","Issues 1.3 - Issues maken","Mikail Köker (1022063) <1022063@hr.nl>","Done",
+"357","Product Backlog Item","User story 1 - Login page","Mikail Köker (1022063) <1022063@hr.nl>","Done",
+"358","Product Backlog Item","User story 1 - Register page","Mikail Köker (1022063) <1022063@hr.nl>","Done",
+"359","Product Backlog Item","User story 2 - Admin dashboard","Mikail Köker (1022063) <1022063@hr.nl>","Done",
+"482","Product Backlog Item","User story 2 - Beheerder requests beheren","Mikail Köker (1022063) <1022063@hr.nl>","Done",
+"483","Product Backlog Item","User story 2/3 - Organisatie request aanmaken","Mikail Köker (1022063) <1022063@hr.nl>","Done",
+"485","Product Backlog Item","User story 2/3 - Organisatie request overzicht","Mikail Köker (1022063) <1022063@hr.nl>","Done",

@@ -1,0 +1,273 @@
+{% extends 'layout.html' %}
+
+{% block mainContent %}
+
+<body class="bg-gray-100 font-family-karla flex">
+
+<aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
+    <div class="p-6" data-aos="fade-up">
+        <a href="/dashboard" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">ACCHUB</a>
+        <a href="/create_organisatie"
+           class="cursor-pointer w-full bg-white cta-btn font-semibold py-2 mt-5 rounded-br-lg rounded-bl-lg rounded-tr-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
+            <i class="fas fa-plus mr-3"></i>Organisatie
+        </a>
+    </div>
+    <nav class="text-white text-base font-semibold pt-3" data-aos="fade-up" data-aos-delay="100">
+        <a href="/dashboard" class="flex items-center active-nav-link text-white py-4 pl-6 nav-item">
+            <i class="fas fa-tachometer-alt mr-3"></i>
+            Dashboard
+        </a>
+        <a href="/aanvragen" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-sticky-note mr-3"></i>
+            Aanvragen
+        </a>
+        <a href="/onderzoeksvragen"
+           class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-table mr-3"></i>
+            Onderzoeksvragen
+        </a>
+        <a href="/ervaringsdeskundigen"
+           class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-user mr-3"></i>
+            Deskundigen
+        </a>
+        <a href="/organisaties"
+           class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-sitemap mr-3"></i>
+            Organisaties
+        </a>
+        <!--        <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">-->
+        <!--            <i class="fas fa-tablet-alt mr-3"></i>-->
+        <!--            Tabbed Content-->
+        <!--        </a>-->
+        <!--        <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">-->
+        <!--            <i class="fas fa-calendar mr-3"></i>-->
+        <!--            Calendar-->
+        <!--        </a>-->
+    </nav>
+</aside>
+<div class="w-full flex flex-col h-screen overflow-y-hidden">
+    <!-- Desktop Header -->
+    <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
+        <div class="w-1/2"></div>
+        <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
+            <button @click="isOpen = !isOpen"
+                    class="realtive z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-green-400 hover:border-green-800 focus:border-gray-300 focus:outline-none">
+                <img src="https://media.licdn.com/dms/image/D4E03AQHegP1mQGRD5Q/profile-displayphoto-shrink_400_400/0/1689638527283?e=1715212800&v=beta&t=gywnG90gHgfXvgtDQvGhHeWs9UmRJMUIdUvaLMXeiC4">
+            </button>
+            <button x-show="isOpen" @click="isOpen = false"
+                    class="above h-full w-full fixed inset-0 cursor-default"></button>
+            <div x-show="isOpen" class="above absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
+                {% if session['user']['rol'] == 'ervaringsdeskundige' %}
+                <a href="/account" class="block px-4 py-2 account-link hover:text-white">Account</a>
+                {% endif %}
+                <a href="/logout" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Header & Nav -->
+    <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
+        <div class="flex items-center justify-between">
+            <a href="index.html" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Acchub</a>
+            <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
+                <i x-show="!isOpen" class="fas fa-bars"></i>
+                <i x-show="isOpen" class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Dropdown Nav -->
+        <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
+            <a href="index.html" class="flex items-center active-nav-link text-white py-2 pl-4 nav-item">
+                <i class="fas fa-tachometer-alt mr-3"></i>
+                Dashboard
+            </a>
+            <a href="blank.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-sticky-note mr-3"></i>
+                Blank Page
+            </a>
+            <a href="tables.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-table mr-3"></i>
+                Tables
+            </a>
+            <a href="forms.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-align-left mr-3"></i>
+                Forms
+            </a>
+            <a href="tabs.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-tablet-alt mr-3"></i>
+                Tabbed Content
+            </a>
+            <a href="calendar.html"
+               class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-calendar mr-3"></i>
+                Calendar
+            </a>
+            <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-user mr-3"></i>
+                My Account
+            </a>
+            <a href="/logout" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-sign-out-alt mr-3"></i>
+                Sign Out
+            </a>
+            <button class="w-full bg-white cta-btn font-semibold py-2 mt-5 rounded-br-lg rounded-bl-lg rounded-tr-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
+                <i class="fas fa-plus mr-3"></i> Organisatie
+            </button>
+        </nav>
+    </header>
+
+    <div class="w-full overflow-x-hidden border-t flex flex-col">
+        <main class="w-full flex-grow p-6">
+            <h1 data-aos="fade-up" class="text-3xl text-black pb-6">Aanvragen</h1>
+
+            <div class="flex flex-wrap mt-6 aanvragen-table" data-aos="fade-up">
+                {% for aanmelding in aanmeldingen %}
+                <div class="w-full md:w-1/2 xl:w-1/4 p-6 aanmelding">
+                    <div class="bg-white border-transparent rounded-lg shadow-lg">
+                        <div class="p-4">
+                            <h5 class="text-3xl text-black font-bold">{{ aanmelding[4] }} {{ aanmelding[5]
+                                }}</h5>
+                            <p class="text-lg text-gray-600 mt-2">Onderzoeksvraag Organisatie naam: {{ aanmelding[7]
+                                }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Onderzoeksvraag Beschrijving: {{
+                                aanmelding[6] }}</p>
+                            <div class="grid grid-cols-2 mt-3">
+                                <div class="col-span-1">
+                                    <form class="approve-form" method="post">
+                                        <input type="hidden" name="aanmelding_id" value="{{ aanmelding[0] }}">
+                                        <button type="button"
+                                                class="approve-aanmelding-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            Goedkeuren
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="col-span-1">
+                                    <form class="disapprove-form" method="post">
+                                        <input type="hidden" name="aanmelding_id" value="{{ aanmelding[0] }}">
+                                        <button type="button"
+                                                class="disapprove-aanmelding-btn bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                            Afkeuren
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% for ervaringsdeskundige in ervaringsdeskundigen %}
+                <div class="w-full md:w-1/2 xl:w-1/4 p-6 aanvraag">
+                    <div class="bg-white border-transparent rounded-lg shadow-lg">
+                        <div class="p-4">
+                            <h5 class="text-3xl text-black font-bold">{{ ervaringsdeskundige[2] }}&nbsp;{{
+                                ervaringsdeskundige[3] }}</h5>
+                            <p class="text-lg text-gray-600 mt-2">Postcode: {{ ervaringsdeskundige[4] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Geslacht: {{ ervaringsdeskundige[5] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Emailadres: {{ ervaringsdeskundige[6] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Telefoonnummer: {{ ervaringsdeskundige[7] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Geboortedatum: {{ ervaringsdeskundige[8] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Bijzonderheden: {{ ervaringsdeskundige[9] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Toezichthouder: {{ ervaringsdeskundige[10] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Toezichthouder naam: {{ ervaringsdeskundige[11] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Toezichthouder email: {{ ervaringsdeskundige[12]
+                                }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Toezichthouder telefoonnummer: {{
+                                ervaringsdeskundige[13] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Benadering: {{ ervaringsdeskundige[15] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Type onderzoek: {{ ervaringsdeskundige[16] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Beschikbaarheid: {{ ervaringsdeskundige[17] }}</p>
+                            {% if ervaringsdeskundige[18] %}
+                            <p class="text-lg text-gray-600 mt-2">Type beperking: {{ ervaringsdeskundige[18] }}</p>
+                            {% endif %}
+                            <form class="approve-form" method="post">
+                                <input type="hidden" name="voornaam" value="{{ ervaringsdeskundige[2] }}">
+                                <input type="hidden" name="achternaam" value="{{ ervaringsdeskundige[3] }}">
+                                <input type="hidden" name="telefoon" value="{{ ervaringsdeskundige[7] }}">
+                                <input type="hidden" name="email" value="{{ ervaringsdeskundige[6] }}">
+                                <button type="button"
+                                        class="approve-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    Goedkeuren
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </main>
+
+        <footer class="w-full bg-white text-right p-4">
+            Built by <a target="_blank" href="https://koker-ict.nl" class="underline">Mikail Köker</a>.
+        </footer>
+    </div>
+</div>
+
+<script>
+    // Aanvraag goedkeuren
+    $(document).ready(function () {
+
+        $('.aanvragen-table').on('click', '.approve-btn', function () {
+            const form = $(this).closest('form');
+            const formData = form.serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: '/approve',
+                data: formData,
+                success: function (response) {
+                    console.log(response);
+
+                    form.closest('.aanvraag').remove();
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+    // Aanmelding goedkeuren
+    $(document).ready(function () {
+
+        $('.aanvragen-table').on('click', '.approve-aanmelding-btn', function () {
+            const form = $(this).closest('form');
+            const formData = form.serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: '/approve_aanmelding',
+                data: formData,
+                success: function (response) {
+                    console.log(response);
+
+                    form.closest('.aanmelding').remove();
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+
+    $('.aanvragen-table').on('click', '.disapprove-aanmelding-btn', function () {
+        const form = $(this).closest('form');
+        const formData = form.serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: '/disapprove_aanmelding',
+            data: formData,
+            success: function (response) {
+                console.log(response);
+
+                form.closest('.aanmelding').remove();
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+</script>
+
+
+{% endblock %}

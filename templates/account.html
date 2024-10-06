@@ -1,0 +1,353 @@
+{% extends 'layout.html' %}
+
+{% block mainContent %}
+
+<body class="bg-gray-100 font-family-karla flex">
+
+<aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
+    <div class="p-6" data-aos="fade-up">
+        <a href="/dashboard" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">ACCHUB</a>
+        {% if session['user']['rol'] == 'ervaringsdeskundige' %}
+        <a href="/account"
+           class="cursor-pointer w-full bg-white cta-btn font-semibold py-2 mt-5 rounded-br-lg rounded-bl-lg rounded-tr-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
+            <i class="fas fa-plus mr-3"></i>Mijn account
+        </a>
+        {% endif %}
+        {% if session['user']['rol'] == 'admin' %}
+        <a href="/create_organisatie"
+           class="cursor-pointer w-full bg-white cta-btn font-semibold py-2 mt-5 rounded-br-lg rounded-bl-lg rounded-tr-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
+            <i class="fas fa-plus mr-3"></i>Organisatie
+        </a>
+        {% endif %}
+    </div>
+    <nav class="text-white text-base font-semibold pt-3" data-aos="fade-up" data-aos-delay="100">
+        <a href="/dashboard" class="flex items-center active-nav-link text-white py-4 pl-6 nav-item">
+            <i class="fas fa-tachometer-alt mr-3"></i>
+            Dashboard
+        </a>
+        {% if session['user']['rol'] == 'admin' %}
+        <a href="/aanvragen" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-sticky-note mr-3"></i>
+            Aanvragen
+        </a>
+        {% endif %}
+        <a href="/onderzoeksvragen"
+           class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-table mr-3"></i>
+            Onderzoeksvragen
+        </a>
+        {% if session['user']['rol'] == 'admin' %}
+        <a href="/ervaringsdeskundigen"
+           class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-user mr-3"></i>
+            Deskundigen
+        </a>
+        {% endif %}
+        {% if session['user']['rol'] == 'admin' %}
+        <a href="/organisaties"
+           class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-sitemap mr-3"></i>
+            Organisaties
+        </a>
+        {% endif %}
+        <!--        <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">-->
+        <!--            <i class="fas fa-tablet-alt mr-3"></i>-->
+        <!--            Tabbed Content-->
+        <!--        </a>-->
+        <!--        <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">-->
+        <!--            <i class="fas fa-calendar mr-3"></i>-->
+        <!--            Calendar-->
+        <!--        </a>-->
+    </nav>
+</aside>
+<div class="w-full flex flex-col h-screen overflow-y-hidden">
+    <!-- Desktop Header -->
+    <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
+        <div class="w-1/2"></div>
+        <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
+            <button @click="isOpen = !isOpen"
+                    class="realtive z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-green-400 hover:border-green-800 focus:border-gray-300 focus:outline-none">
+                <img src="https://media.licdn.com/dms/image/D4E03AQHegP1mQGRD5Q/profile-displayphoto-shrink_400_400/0/1689638527283?e=1715212800&v=beta&t=gywnG90gHgfXvgtDQvGhHeWs9UmRJMUIdUvaLMXeiC4">
+            </button>
+            <button x-show="isOpen" @click="isOpen = false"
+                    class="above h-full w-full fixed inset-0 cursor-default"></button>
+            <div x-show="isOpen" class="above absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
+                <a href="/account" class="block px-4 py-2 account-link hover:text-white">Account</a>
+                <a href="/logout" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Header & Nav -->
+    <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
+        <div class="flex items-center justify-between">
+            <a href="index.html" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Acchub</a>
+            <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
+                <i x-show="!isOpen" class="fas fa-bars"></i>
+                <i x-show="isOpen" class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Dropdown Nav -->
+        <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
+            <a href="index.html" class="flex items-center active-nav-link text-white py-2 pl-4 nav-item">
+                <i class="fas fa-tachometer-alt mr-3"></i>
+                Dashboard
+            </a>
+            <a href="blank.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-sticky-note mr-3"></i>
+                Blank Page
+            </a>
+            <a href="tables.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-table mr-3"></i>
+                Tables
+            </a>
+            <a href="forms.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-align-left mr-3"></i>
+                Forms
+            </a>
+            <a href="tabs.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-tablet-alt mr-3"></i>
+                Tabbed Content
+            </a>
+            <a href="calendar.html"
+               class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-calendar mr-3"></i>
+                Calendar
+            </a>
+            <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-user mr-3"></i>
+                My Account
+            </a>
+            <a href="/logout" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-sign-out-alt mr-3"></i>
+                Sign Out
+            </a>
+            <button class="w-full bg-white cta-btn font-semibold py-2 mt-5 rounded-br-lg rounded-bl-lg rounded-tr-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
+                <i class="fas fa-plus mr-3"></i> Organisatie
+            </button>
+        </nav>
+    </header>
+
+    <div class="w-full overflow-x-hidden border-t flex flex-col">
+        <main class="w-full flex-grow p-6">
+            <h1 data-aos="fade-up" class="text-3xl text-black pb-6">Mijn account</h1>
+            <form data-aos="fade-up" class="mx-auto grid grid-cols-3 gap-x-6" method="POST" action="/account">
+                <div class="col-span-1">
+                    <div class="relative z-0 w-full mb-5 group">
+                        <input class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                               type="text" name="gebruikersnaam" id="gebruikersnaam" placeholder=" "
+                               value="{{user[18]}}"/>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                               for="gebruikersnaam">Gebruikersnaam</label>
+                    </div>
+
+                    <div class="relative z-0 w-full mb-5 group">
+                        <input class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                               type="password" name="wachtwoord" id="wachtwoord" placeholder=" " required/>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                               for="wachtwoord">Wachtwoord</label>
+                    </div>
+
+                    <div class="relative z-0 w-full mb-5 group">
+                        <input class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                               type="text" name="voornaam" id="voornaam" placeholder=" " value="{{ user[2] }}"/>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                               for="voornaam">Voornaam</label>
+                    </div>
+
+                    <div class="relative z-0 w-full mb-5 group">
+                        <input class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                               type="text" name="achternaam" id="achternaam" placeholder=" " value="{{ user[3] }}"/>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                               for="achternaam">Achternaam</label>
+                    </div>
+
+                    <div class="relative z-0 w-full mb-5 group">
+                        <input class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                               type="text" name="postcode" id="postcode" placeholder=" " value="{{ user[4] }}"/>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                               for="postcode">Postcode</label>
+                    </div>
+                </div>
+                <div class="col-span-1">
+                    <div class="relative z-0 w-full mb-5 group">
+                        <input class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                               type="email" name="emailadres" id="emailadres" placeholder=" " value="{{ user[6] }}"/>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                               for="emailadres">Emailadres</label>
+                    </div>
+
+                    <div class="relative z-0 w-full mb-5 group">
+                        <input class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                               type="tel" name="telefoonnummer" id="telefoonnummer" placeholder=" "
+                               value="{{ user[7] }}"/>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                               for="telefoonnummer">Telefoonnummer</label>
+                    </div>
+
+                    <div class="relative z-0 w-full mb-5 group">
+                        <input class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                               type="date" name="geboortedatum" id="geboortedatum" placeholder=" "
+                               value="{{ user[8] }}"/>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                               for="geboortedatum">Geboortedatum</label>
+                    </div>
+
+                    <div class="relative z-0 w-full mb-5 group">
+                        <input class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                               type="text" name="bijzonderheden" id="bijzonderheden" placeholder=" "
+                               value="{{ user[9] }}"/>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                               for="bijzonderheden">Bijzonderheden</label>
+                    </div>
+                </div>
+                <div class="col-span-1">
+                    <div class="flex items-center mb-4">
+                        <input id="toezichthouder" type="checkbox" value="{{ user[10] }}"
+                               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="toezichthouder" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Toezichthouder</label>
+                    </div>
+
+
+                    <div class="relative z-0 w-full mb-5 group toezichthouder-field" id="toezichthouderNameDiv">
+                        <input class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                               type="text" name="toezichthouder_naam" id="toezichthouder_naam" placeholder=" "/>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                               for="toezichthouder_naam">Toezichthouder Naam</label>
+                    </div>
+
+                    <div class="relative z-0 w-full mb-5 group toezichthouder-field" id="toezichthouderEmailDiv">
+                        <input class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                               type="email" name="toezichthouder_emailadres" id="toezichthouder_emailadres"
+                               placeholder=" "/>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                               for="toezichthouder_emailadres">Toezichthouder Emailadres</label>
+                    </div>
+
+                    <div class="relative z-0 w-full mb-5 group toezichthouder-field" id="toezichthouderTelefoonDiv">
+                        <input class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                               type="tel" name="toezichthouder_telefoonnummer" id="toezichthouder_telefoonnummer"
+                               placeholder=" "/>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                               for="toezichthouder_telefoonnummer">Toezichthouder Telefoonnummer</label>
+                    </div>
+
+                    <div class="relative z-0 w-full mb-5 group">
+                        <select class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                name="benadering" id="benadering">
+                            <option value="" disabled selected>Selecteer benadering</option>
+                            <option value="telefonisch">Telefonisch</option>
+                            <option value="email">Email</option>
+                        </select>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                               for="benadering">Voorkeur benadering</label>
+                    </div>
+
+                    <div class="relative z-0 w-full mb-5 group">
+                        <select class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                name="type_onderzoek" id="type_onderzoek">
+                            <option value="" disabled selected>Selecteer type onderzoek</option>
+                            <option value="telefonisch">Telefonisch</option>
+                            <option value="internet">Internet</option>
+                            <option value="op locatie">Op locatie</option>
+                        </select>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                               for="type_onderzoek">Type onderzoek</label>
+                    </div>
+
+                    <div class="relative z-0 w-full mb-5 group">
+                    <textarea
+                            class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            name="beschikbaarheid" id="beschikbaarheid" placeholder=" "
+                            rows="4">{{ user[17] }}</textarea>
+                        <label class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                               for="beschikbaarheid">Beschikbaarheid</label>
+                    </div>
+                </div>
+
+                <div data-aos="fade-up" data-aos-delay="300">
+                    <input class="cursor-pointer flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                           type="submit" value="Update">
+                </div>
+            </form>
+            <div data-aos="fade-up" data-aos-delay="200" class="w-full p-6 aanvraag mb-8">
+                <div class="bg-white border-transparent rounded-lg shadow-lg">
+                    <div class="p-4 grid grid-cols-2">
+                        <div class="col-span-1">
+                            <h5 class="text-3xl text-black font-bold">{{ user[2] }}&nbsp;{{
+                                user[3] }}</h5>
+                            <p class="text-lg text-gray-600 mt-2">Gebruikersnaam: {{ user[18] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Postcode: {{ user[4] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Geslacht: {{ user[5] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Emailadres: {{ user[6] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Telefoonnummer: {{ user[7] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Geboortedatum: {{ user[8] }}</p>
+                        </div>
+                        <div class="col-span-1">
+                            <p class="text-lg text-gray-600 mt-2">Bijzonderheden: {{ user[9] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Toezichthouder: {{ user[10] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Toezichthouder naam: {{ user[11] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Toezichthouder email: {{ user[12]
+                                }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Toezichthouder telefoonnummer: {{
+                                user[13] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Benadering: {{ user[15] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Type onderzoek: {{ user[16] }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Beschikbaarheid: {{ user[17] }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="w-full bg-white text-right p-4">
+            Built by <a target="_blank" href="https://koker-ict.nl" class="underline">Mikail Köker</a>.
+        </footer>
+    </div>
+
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var toezichthouderCheckbox = document.getElementById('toezichthouder');
+        var toezichthouderNameDiv = document.getElementById('toezichthouderNameDiv');
+        var toezichthouderEmailDiv = document.getElementById('toezichthouderEmailDiv');
+        var toezichthouderTelefoonDiv = document.getElementById('toezichthouderTelefoonDiv');
+
+        function toggleToezichthouderFields() {
+            const toezichthouderFields = document.querySelectorAll('.toezichthouder-field');
+            if (toezichthouderCheckbox.checked) {
+                toezichthouderFields.forEach(function (field) {
+                    field.classList.add('show');
+                });
+            } else {
+                toezichthouderFields.forEach(function (field) {
+                    field.classList.remove('show');
+                });
+            }
+        }
+
+        toggleToezichthouderFields();
+
+        toezichthouderCheckbox.addEventListener('change', toggleToezichthouderFields);
+
+        document.getElementById('geboortedatum').addEventListener('change', function () {
+            var birthdateInput = document.getElementById('geboortedatum');
+            var birthdate = new Date(birthdateInput.value);
+            var today = new Date();
+            var age = today.getFullYear() - birthdate.getFullYear();
+
+            if (today.getMonth() < birthdate.getMonth() || (today.getMonth() === birthdate.getMonth() && today.getDate() < birthdate.getDate())) {
+                age--;
+            }
+
+            if (age < 18) {
+                toezichthouderCheckbox.checked = true;
+                toggleToezichthouderFields();
+            }
+        });
+    });
+</script>
+
+
+{% endblock %}

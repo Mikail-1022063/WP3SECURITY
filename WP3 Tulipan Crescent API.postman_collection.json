@@ -1,0 +1,35 @@
+{
+	"info": {
+		"_postman_id": "4554e7d7-879a-4776-94d5-0ce0519e2955",
+		"name": "WP3 Tulipan Crescent API",
+		"description": "Url:\n\n[http://0.0.0.0:8801/api/onderzoeksvragen](http://0.0.0.0:8801/api/onderzoeksvragen)\n\nBody:\n\n{  \n\"api_key\": \"Y7YD1Q\",  \n\"vraag\": \"Test\",  \n\"Datum_vanaf\": \"2024-03-22\",  \n\"Datum_tot\": \"2024-03-31\",  \n\"Locatie\": \"Thuis\",  \n\"Beloning\": 1,  \n\"Leeftijd_van\": \"18\",  \n\"Leeftijd_tot\": \"24\"  \n}",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "33421723"
+	},
+	"item": [
+		{
+			"name": "http://0.0.0.0:8801/api/onderzoeksvragen",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"api_key\": \"{{API_KEY}}\",\r\n    \"vraag\": \"Test\",\r\n    \"Datum_vanaf\": \"2024-03-22\",\r\n    \"Datum_tot\": \"2024-03-31\",\r\n    \"Locatie\": \"Thuis\",\r\n    \"Beloning\": 1,\r\n    \"Leeftijd_van\": \"18\",\r\n    \"Leeftijd_tot\": \"24\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://0.0.0.0:8801/api/onderzoeksvragen"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "API_KEY",
+			"value": "Y7YD1Q"
+		}
+	]
+}

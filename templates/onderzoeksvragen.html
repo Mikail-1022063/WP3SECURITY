@@ -1,0 +1,328 @@
+{% extends 'layout.html' %}
+
+{% block mainContent %}
+
+<body class="bg-gray-100 font-family-karla flex">
+
+<aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
+    <div class="p-6" data-aos="fade-up">
+        <a href="/dashboard" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">ACCHUB</a>
+        <a href="/create_organisatie"
+           class="cursor-pointer w-full bg-white cta-btn font-semibold py-2 mt-5 rounded-br-lg rounded-bl-lg rounded-tr-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
+            <i class="fas fa-plus mr-3"></i>Organisatie
+        </a>
+    </div>
+    <nav class="text-white text-base font-semibold pt-3" data-aos="fade-up" data-aos-delay="100">
+        <a href="/dashboard" class="flex items-center active-nav-link text-white py-4 pl-6 nav-item">
+            <i class="fas fa-tachometer-alt mr-3"></i>
+            Dashboard
+        </a>
+        {% if session['user']['rol'] == 'admin' %}
+        <a href="/aanvragen" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-sticky-note mr-3"></i>
+            Aanvragen
+        </a>
+        {% endif %}
+        <a href="/onderzoeksvragen"
+           class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-table mr-3"></i>
+            Onderzoeksvragen
+        </a>
+        {% if session['user']['rol'] == 'admin' %}
+        <a href="/ervaringsdeskundigen"
+           class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-user mr-3"></i>
+            Deskundigen
+        </a>
+        {% endif %}
+        {% if session['user']['rol'] == 'admin' %}
+        <a href="/organisaties"
+           class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-sitemap mr-3"></i>
+            Organisaties
+        </a>
+        {% endif %}
+        <!--        <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">-->
+        <!--            <i class="fas fa-tablet-alt mr-3"></i>-->
+        <!--            Tabbed Content-->
+        <!--        </a>-->
+        <!--        <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">-->
+        <!--            <i class="fas fa-calendar mr-3"></i>-->
+        <!--            Calendar-->
+        <!--        </a>-->
+    </nav>
+</aside>
+<div class="w-full flex flex-col h-screen overflow-y-hidden">
+    <!-- Desktop Header -->
+    <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
+        <div class="w-1/2"></div>
+        <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
+            <button @click="isOpen = !isOpen"
+                    class="realtive z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-green-400 hover:border-green-800 focus:border-gray-300 focus:outline-none">
+                <img src="https://media.licdn.com/dms/image/D4E03AQHegP1mQGRD5Q/profile-displayphoto-shrink_400_400/0/1689638527283?e=1715212800&v=beta&t=gywnG90gHgfXvgtDQvGhHeWs9UmRJMUIdUvaLMXeiC4">
+            </button>
+            <button x-show="isOpen" @click="isOpen = false"
+                    class="above h-full w-full fixed inset-0 cursor-default"></button>
+            <div x-show="isOpen" class="above absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
+                {% if session['user']['rol'] == 'ervaringsdeskundige' %}
+                <a href="/account" class="block px-4 py-2 account-link hover:text-white">Account</a>
+                {% endif %}
+                <a href="/logout" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Header & Nav -->
+    <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
+        <div class="flex items-center justify-between">
+            <a href="index.html" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Acchub</a>
+            <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
+                <i x-show="!isOpen" class="fas fa-bars"></i>
+                <i x-show="isOpen" class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Dropdown Nav -->
+        <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
+            <a href="index.html" class="flex items-center active-nav-link text-white py-2 pl-4 nav-item">
+                <i class="fas fa-tachometer-alt mr-3"></i>
+                Dashboard
+            </a>
+            <a href="blank.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-sticky-note mr-3"></i>
+                Blank Page
+            </a>
+            <a href="tables.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-table mr-3"></i>
+                Tables
+            </a>
+            <a href="forms.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-align-left mr-3"></i>
+                Forms
+            </a>
+            <a href="tabs.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-tablet-alt mr-3"></i>
+                Tabbed Content
+            </a>
+            <a href="calendar.html"
+               class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-calendar mr-3"></i>
+                Calendar
+            </a>
+            <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-user mr-3"></i>
+                My Account
+            </a>
+            <a href="/logout" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-sign-out-alt mr-3"></i>
+                Sign Out
+            </a>
+            <button class="w-full bg-white cta-btn font-semibold py-2 mt-5 rounded-br-lg rounded-bl-lg rounded-tr-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
+                <i class="fas fa-plus mr-3"></i> Organisatie
+            </button>
+        </nav>
+    </header>
+
+    <div class="w-full overflow-x-hidden border-t flex flex-col">
+        <main class="w-full flex-grow p-6">
+            <h1 data-aos="fade-up" class="text-3xl text-black pb-6">Onderzoeksvragen</h1>
+
+            {% if session['user']['rol'] == 'ervaringsdeskundige' %}
+            <div class="flex flex-wrap mt-6 aanvragen-er-table" data-aos="fade-up">
+                {% for onderzoeksvraag, aanmelding_status in onderzoeksvragen %}
+                <div id="onderzoeksvraag_{{ onderzoeksvraag.onderzoek_id }}" class="w-full md:w-1/2 xl:w-1/4 p-6 mb-4">
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-lg">
+                        <div class="p-4">
+                            <h5 class="text-3xl text-black font-bold">{{ onderzoeksvraag.organisatie.Naam }}</h5>
+                            <p class="text-lg text-gray-600 mt-2">Beschrijving: {{ onderzoeksvraag.Beschrijving }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Datum vanaf: {{ onderzoeksvraag.Datum_vanaf }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Datum tot: {{ onderzoeksvraag.Datum_tot }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Locatie: {{ onderzoeksvraag.Locatie }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Beloning: {{ onderzoeksvraag.Beloning }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Leeftijd van: {{ onderzoeksvraag.Leeftijd_van }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Leeftijd tot: {{ onderzoeksvraag.Leeftijd_tot }}</p>
+
+                            {% if aanmelding_status == 0 %}
+                            <div class=" mt-4 inline-block bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-1 rounded">
+                                In behandeling
+                            </div>
+                            {% elif aanmelding_status == 1 %}
+                            <div class=" mt-4 inline-block bg-green-100 border border-green-400 text-green-700 px-4 py-1 rounded">
+                                Goedgekeurd
+                            </div>
+                            {% elif aanmelding_status == 2 %}
+                            <div class=" mt-4 inline-block bg-red-100 border border-red-400 text-red-700 px-4 py-1 rounded">
+                                Afgekeurd
+                            </div>
+                            {% endif %}
+
+                            {% if onderzoeksvraag.Status and aanmelding_status == 'not signed up' %}
+                            <form class="mt-3" method="POST" action="/signup_for_onderzoeksvraag">
+                                <input type="hidden" name="onderzoeksvraag_id"
+                                       value="{{ onderzoeksvraag.onderzoek_id }}">
+                                <button type="submit"
+                                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    Aanmelden
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if session['user']['rol'] == 'admin' %}
+            <div class="flex flex-wrap mt-6 aanvragen-table" data-aos="fade-up">
+                {% for onderzoeksvraag, aanmelding_status in onderzoeksvragen %}
+                <div id="onderzoeksvraag_{{ onderzoeksvraag.onderzoek_id }}" class="w-full md:w-1/2 xl:w-1/4 p-6 mb-4">
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-lg">
+                        <div class="p-4">
+                            <h5 class="text-3xl text-black font-bold">{{ onderzoeksvraag.organisatie.Naam }}</h5>
+                            <p class="text-lg text-gray-600 mt-2">Beschrijving: {{ onderzoeksvraag.Beschrijving }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Datum vanaf: {{ onderzoeksvraag.Datum_vanaf }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Datum tot: {{ onderzoeksvraag.Datum_tot }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Locatie: {{ onderzoeksvraag.Locatie }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Beloning: {{ onderzoeksvraag.Beloning }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Leeftijd van: {{ onderzoeksvraag.Leeftijd_van }}</p>
+                            <p class="text-lg text-gray-600 mt-2">Leeftijd tot: {{ onderzoeksvraag.Leeftijd_tot }}</p>
+
+                            {% if onderzoeksvraag.Status %}
+                            <div class="alert mt-4 inline-block bg-green-100 border border-green-400 text-green-700 px-4 py-1 rounded">
+                                Goedgekeurd
+                            </div>
+                            {% else %}
+                            <div class="alert mt-4 inline-block bg-red-100 border border-red-400 text-red-700 px-4 py-1 rounded">
+                                Niet goedgekeurd
+                            </div>
+                            {% endif %}
+                            {% if onderzoeksvraag.Status %}
+                            {% else %}
+                            <form action="{{ url_for('goedkeuren_onderzoeksvraag', id=onderzoeksvraag.onderzoek_id) }}"
+                                  method="post" id="goedkeurenForm_{{ onderzoeksvraag.onderzoek_id }}"
+                                  data-id="{{ onderzoeksvraag.onderzoek_id }}" class="mt-3">
+                                <button type="submit"
+                                        id="goedkeurenButton_{{ onderzoeksvraag.onderzoek_id }}"
+                                        data-id="{{ onderzoeksvraag.onderzoek_id }}"
+                                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    Goedkeuren
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </main>
+
+        <footer class="w-full bg-white text-right p-4">
+            Built by <a target="_blank" href="https://koker-ict.nl" class="underline">Mikail Köker</a>.
+        </footer>
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $("[id^=goedkeurenButton]").click(function (e) {
+            e.preventDefault();
+
+            const id = $(this).data("id");
+            const form = $("#goedkeurenForm_" + id);
+
+            $.ajax({
+                url: form.attr("action"),
+                type: 'post',
+                success: function (response) {
+                    console.log(response);
+                    updateStatus();
+                },
+                error: function (error) {
+                    console.log(error);
+                    alert("Error in approving onderzoeksvraag");
+                }
+            });
+
+            $(this).remove();
+        });
+    });
+
+    function updateStatus() {
+        $('[id^=onderzoeksvraag_]').each(function () {
+            const id = this.id.split('_')[1];
+            const div = $(this);
+
+            $.ajax({
+                url: '/get_onderzoeksvraag_status/' + id,
+                type: 'get',
+                success: function (response) {
+                    if (response.status) {
+                        div.find('.alert').removeClass('border-red-400 bg-red-100 text-red-700 alert-danger').addClass('alert-success border-green-400 bg-green-100 text-green-700').text('Goedgekeurd');
+                    } else {
+                        div.find('.alert').removeClass('alert-succes bg-green-100 border-green-400 text-green-700').addClass('alert-danger border-red-400 bg-red-100 text-red-700').text('Niet goedgekeurd');
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+    }
+
+    setInterval(updateStatus, 2000);
+
+    let lastId = 0;
+
+    if ($('[id^=onderzoeksvraag_]').length) {
+        let lastOnderzoeksvraagId = $('[id^=onderzoeksvraag_]').last().attr('id');
+        lastId = parseInt(lastOnderzoeksvraagId.split('_')[1]);
+    }
+
+    $(document).ready(function () {
+        function checkForNewOnderzoeksvragen() {
+            $.ajax({
+                url: '/get_new_onderzoeksvragen/' + lastId,
+                type: 'get',
+                success: function (response) {
+                    console.log(response);
+                    response.forEach(function (onderzoeksvraag) {
+                        console.log(onderzoeksvraag);
+                        if (onderzoeksvraag && onderzoeksvraag.Organisatie) {
+                            var onderzoeksvraagDiv = $('<div>').attr('id', 'onderzoeksvraag_' + onderzoeksvraag.onderzoek_id).addClass('w-full md:w-1/2 xl:w-1/3 p-6 mb-4');
+                            var statusDiv = onderzoeksvraag.Status ? '<div class="alert mt-4 inline-block bg-green-100 border border-green-400 text-green-700 px-4 py-1 rounded">Goedgekeurd</div>' : '<div class="alert mt-4 inline-block bg-red-100 border border-red-400 text-red-700 px-4 py-1 rounded">Niet goedgekeurd</div>';
+                            var approveButton = onderzoeksvraag.Status ? '' : '<button type="submit" id="goedkeurenButton_' + onderzoeksvraag.onderzoek_id + '" data-id="' + onderzoeksvraag.onderzoek_id + '" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-3">Goedkeuren</button>';
+                            onderzoeksvraagDiv.html(`
+            <div class="bg-white border border-gray-200 rounded-lg shadow-lg">
+                <div class="p-4">
+                    <h5 class="text-3xl text-black font-bold">${onderzoeksvraag.Organisatie}</h5>
+                    <p class="text-lg text-gray-600 mt-2">Beschrijving: ${onderzoeksvraag.Beschrijving}</p>
+                    <p class="text-lg text-gray-600 mt-2">Datum vanaf: ${onderzoeksvraag.Datum_vanaf}</p>
+                    <p class="text-lg text-gray-600 mt-2">Datum tot: ${onderzoeksvraag.Datum_tot}</p>
+                    <p class="text-lg text-gray-600 mt-2">Locatie: ${onderzoeksvraag.Locatie}</p>
+                    <p class="text-lg text-gray-600 mt-2">Beloning: ${onderzoeksvraag.Beloning}</p>
+                    <p class="text-lg text-gray-600 mt-2">Leeftijd van: ${onderzoeksvraag.Leeftijd_van}</p>
+                    <p class="text-lg text-gray-600 mt-2">Leeftijd tot: ${onderzoeksvraag.Leeftijd_tot}</p>
+                                        ${statusDiv}
+                    ${approveButton}
+                </div>
+            </div>
+        `);
+                            $('.aanvragen-table').append(onderzoeksvraagDiv);
+                            lastId = onderzoeksvraag.onderzoek_id;
+                        }
+                    });
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        setInterval(checkForNewOnderzoeksvragen, 1000);
+    });
+
+</script>
+
+{% endblock %}

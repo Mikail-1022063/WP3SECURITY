@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
+
+.font-family-karla {
+    font-family: karla;
+}
+
+.bg-sidebar {
+    background: #3d68ff;
+}
+
+.cta-btn {
+    color: #3d68ff;
+}
+
+.upgrade-btn {
+    background: #1947ee;
+}
+
+.upgrade-btn:hover {
+    background: #0038fd;
+}
+
+.active-nav-link {
+    background: #1947ee;
+}
+
+.nav-item:hover {
+    background: #1947ee;
+}
+
+.account-link:hover {
+    background: #3d68ff;
+}
+
+#toezichthouder:checked + .peer-check-label .peer-check-btn {
+    background-color: #2563EB;
+    border-color: #2563EB;
+}
+
+#toezichthouder:checked + .peer-check-label .peer-check-btn svg {
+    fill: #ffffff;
+}
+
+.toezichthouder-field {
+    opacity: 0;
+    height: 0;
+    visibility: hidden;
+    margin-bottom: 0 !important;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.toezichthouder-field.show {
+    opacity: 1;
+    margin-bottom: 1.25rem !important;
+    visibility: visible;
+    height: max-content;
+}
+
+.home {
+    background-color: #3d68ff;
+}
+
+.logo {
+    width: 250px;
+    object-fit: cover;
+    margin-bottom: -50px;
+}
+
+.message-box {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 9999;
+}
+
+aside {
+    z-index: 99;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.above {
+    z-index: 99;
+}

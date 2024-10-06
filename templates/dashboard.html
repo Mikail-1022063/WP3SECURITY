@@ -1,0 +1,357 @@
+{% extends 'layout.html' %}
+
+{% block mainContent %}
+
+<body class="bg-gray-100 font-family-karla flex">
+
+<aside class="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
+    <div class="p-6" data-aos="fade-up">
+        <a href="/dashboard" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">ACCHUB</a>
+        {% if session['user']['rol'] == 'ervaringsdeskundige' %}
+        <a href="/account"
+           class="cursor-pointer w-full bg-white cta-btn font-semibold py-2 mt-5 rounded-br-lg rounded-bl-lg rounded-tr-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
+            <i class="fas fa-plus mr-3"></i>Mijn account
+        </a>
+        {% endif %}
+        {% if session['user']['rol'] == 'admin' %}
+        <a href="/create_organisatie"
+           class="cursor-pointer w-full bg-white cta-btn font-semibold py-2 mt-5 rounded-br-lg rounded-bl-lg rounded-tr-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
+            <i class="fas fa-plus mr-3"></i>Organisatie
+        </a>
+        {% endif %}
+    </div>
+    <nav class="text-white text-base font-semibold pt-3" data-aos="fade-up" data-aos-delay="100">
+        <a href="/dashboard" class="flex items-center active-nav-link text-white py-4 pl-6 nav-item">
+            <i class="fas fa-tachometer-alt mr-3"></i>
+            Dashboard
+        </a>
+        {% if session['user']['rol'] == 'admin' %}
+        <a href="/aanvragen" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-sticky-note mr-3"></i>
+            Aanvragen
+        </a>
+        {% endif %}
+        <a href="/onderzoeksvragen"
+           class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-table mr-3"></i>
+            Onderzoeksvragen
+        </a>
+        {% if session['user']['rol'] == 'admin' %}
+        <a href="/ervaringsdeskundigen"
+           class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-user mr-3"></i>
+            Deskundigen
+        </a>
+        {% endif %}
+        {% if session['user']['rol'] == 'admin' %}
+        <a href="/organisaties"
+           class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">
+            <i class="fas fa-sitemap mr-3"></i>
+            Organisaties
+        </a>
+        {% endif %}
+        <!--        <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">-->
+        <!--            <i class="fas fa-tablet-alt mr-3"></i>-->
+        <!--            Tabbed Content-->
+        <!--        </a>-->
+        <!--        <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item">-->
+        <!--            <i class="fas fa-calendar mr-3"></i>-->
+        <!--            Calendar-->
+        <!--        </a>-->
+    </nav>
+</aside>
+<div class="w-full flex flex-col h-screen overflow-y-hidden">
+    <!-- Desktop Header -->
+    <header class="w-full items-center bg-white py-2 px-6 hidden sm:flex">
+        <div class="w-1/2"></div>
+        <div x-data="{ isOpen: false }" class="relative w-1/2 flex justify-end">
+            <button @click="isOpen = !isOpen"
+                    class="realtive z-10 w-12 h-12 rounded-full overflow-hidden border-4 border-green-400 hover:border-green-800 focus:border-gray-300 focus:outline-none">
+                <img src="https://media.licdn.com/dms/image/D4E03AQHegP1mQGRD5Q/profile-displayphoto-shrink_400_400/0/1689638527283?e=1715212800&v=beta&t=gywnG90gHgfXvgtDQvGhHeWs9UmRJMUIdUvaLMXeiC4">
+            </button>
+            <button x-show="isOpen" @click="isOpen = false"
+                    class="above h-full w-full fixed inset-0 cursor-default"></button>
+            <div x-show="isOpen" class="above absolute w-32 bg-white rounded-lg shadow-lg py-2 mt-16">
+                {% if session['user']['rol'] == 'ervaringsdeskundige' %}
+                <a href="/account" class="block px-4 py-2 account-link hover:text-white">Account</a>
+                {% endif %}
+                <a href="/logout" class="block px-4 py-2 account-link hover:text-white">Sign Out</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Header & Nav -->
+    <header x-data="{ isOpen: false }" class="w-full bg-sidebar py-5 px-6 sm:hidden">
+        <div class="flex items-center justify-between">
+            <a href="index.html" class="text-white text-3xl font-semibold uppercase hover:text-gray-300">Acchub</a>
+            <button @click="isOpen = !isOpen" class="text-white text-3xl focus:outline-none">
+                <i x-show="!isOpen" class="fas fa-bars"></i>
+                <i x-show="isOpen" class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Dropdown Nav -->
+        <nav :class="isOpen ? 'flex': 'hidden'" class="flex flex-col pt-4">
+            <a href="index.html" class="flex items-center active-nav-link text-white py-2 pl-4 nav-item">
+                <i class="fas fa-tachometer-alt mr-3"></i>
+                Dashboard
+            </a>
+            <a href="blank.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-sticky-note mr-3"></i>
+                Blank Page
+            </a>
+            <a href="tables.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-table mr-3"></i>
+                Tables
+            </a>
+            <a href="forms.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-align-left mr-3"></i>
+                Forms
+            </a>
+            <a href="tabs.html" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-tablet-alt mr-3"></i>
+                Tabbed Content
+            </a>
+            <a href="calendar.html"
+               class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-calendar mr-3"></i>
+                Calendar
+            </a>
+            <a href="#" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-user mr-3"></i>
+                My Account
+            </a>
+            <a href="/logout" class="flex items-center text-white opacity-75 hover:opacity-100 py-2 pl-4 nav-item">
+                <i class="fas fa-sign-out-alt mr-3"></i>
+                Sign Out
+            </a>
+            <button class="w-full bg-white cta-btn font-semibold py-2 mt-5 rounded-br-lg rounded-bl-lg rounded-tr-lg shadow-lg hover:shadow-xl hover:bg-gray-300 flex items-center justify-center">
+                <i class="fas fa-plus mr-3"></i> Organisatie
+            </button>
+        </nav>
+    </header>
+
+    <div class="w-full overflow-x-hidden border-t flex flex-col">
+        <main class="w-full flex-grow p-6">
+            {% if session['user']['rol'] == 'ervaringsdeskundige' %}
+            <h1 data-aos="fade-up" class="text-3xl text-black pb-6">Dashboard</h1>
+            <div data-aos="fade-up" class="grid grid-cols-2 gap-6">
+                <div class="flex items-center justify-center bg-white rounded-lg shadow-lg p-6">
+                    <div id="clock" class="text-4xl font-bold"></div>
+                </div>
+                <div class="flex items-center justify-center bg-white rounded-lg shadow-lg p-6">
+                    <div id="current-date" class="text-4xl font-bold"></div>
+                </div>
+            </div>
+            <div class="flex justify-center mt-10">
+                <div class="flex flex-col justify-center"><h3 data-aos="fade-up"
+                                                              class="text-2xl text-black pb-6 text-center">
+                    Mini
+                    game?</h3>
+                    <div id="snake-game" class=""></div>
+                </div>
+            </div>
+            {% endif %}
+            {% if session['user']['rol'] == 'admin' %}
+            <h1 data-aos="fade-up" class="text-3xl text-black pb-6">Admin Dashboard</h1>
+
+            <div class="flex flex-wrap mt-6">
+                <div class="w-full pr-0 lg:pr-2">
+                    <p data-aos="fade-up" data-aos-delay="100" class="text-xl pb-3 flex items-center">
+                        <i class="fas fa-plus mr-3"></i> Aanvragen
+                    </p>
+                    <div class="p-6 bg-white" data-aos="fade-up" data-aos-delay="200">
+                        <table class="min-w-full bg-white overflow-hidden aanvragen-table">
+                            <thead class="bg-gray-800 text-white">
+                            <tr>
+                                <th class="w-1/3 text-left py-3 px-4 uppercase font-semibold text-sm">Naam</th>
+                                <th class="w-1/3 text-left py-3 px-4 uppercase font-semibold text-sm">Achternaam</th>
+                                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Status</th>
+                                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Actie</th>
+                            </tr>
+                            </thead>
+                            <tbody class="text-gray-700">
+                            {% for ervaringsdeskundige in ervaringsdeskundigen %}
+                            <tr data-deskundige-id="{{ ervaringsdeskundige[0] }}">
+                                <td class="w-1/3 text-left py-3 px-4">{{ ervaringsdeskundige[1] }}</td>
+                                <td class="w-1/3 text-left py-3 px-4">{{ ervaringsdeskundige[2] }}</td>
+                                <td class="text-left py-3 px-4">{{"Nog niet goedgekeurd"}}</td>
+                                <td class="text-left py-3 px-4">
+                                    <form class="approve-form" method="post">
+                                        <input type="hidden" name="voornaam" value="{{ ervaringsdeskundige[1] }}">
+                                        <input type="hidden" name="achternaam" value="{{ ervaringsdeskundige[2] }}">
+                                        <input type="hidden" name="telefoon" value="{{ ervaringsdeskundige[4] }}">
+                                        <input type="hidden" name="email" value="{{ ervaringsdeskundige[5] }}">
+                                        <button type="button"
+                                                class="approve-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                            Goedkeuren
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="w-full mt-12">
+                <p data-aos="fade-up" data-aos-delay="300" class="text-xl pb-3 flex items-center">
+                    <i class="fas fa-list mr-3"></i> Ervaringsdeskundigen
+                </p>
+                <div class="bg-white overflow-auto" data-aos="fade-up" data-aos-delay="400">
+                    <table class="min-w-full bg-white ervaringsdeskundigen-table">
+                        <thead class="bg-gray-800 text-white">
+                        <tr>
+                            <th class="w-1/3 text-left py-3 px-4 uppercase font-semibold text-sm">Naam</th>
+                            <th class="w-1/3 text-left py-3 px-4 uppercase font-semibold text-sm">Achternaam</th>
+                            <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Telefoon</th>
+                            <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Email</th>
+                        </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                        {% for info in infos %}
+                        <tr>
+                            <td class="w-1/3 text-left py-3 px-4">{{ info[0]
+                                }}
+                            </td>
+                            <td class="w-1/3 text-left py-3 px-4">{{ info[1]
+                                }}
+                            </td>
+                            <td class="text-left py-3 px-4"><a
+                                    class="hover:text-blue-500" href="tel:{{ info[2] }}">{{
+                                info[2] }}</a>
+                            </td>
+                            <td class="text-left py-3 px-4"><a
+                                    class="hover:text-blue-500"
+                                    href="mailto:{{ info[3] }}m">{{ info[3] }}</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+        </main>
+
+        <footer class="w-full bg-white text-right p-4">
+            Built by <a target="_blank" href="https://koker-ict.nl" class="underline">Mikail Köker</a>.
+        </footer>
+    </div>
+
+</div>
+
+<script>
+    // Aanvraag goedkeuren
+    $(document).ready(function () {
+
+        $('.aanvragen-table').on('click', '.approve-btn', function () {
+            const form = $(this).closest('form');
+            const formData = form.serialize();
+
+            $.ajax({
+                type: 'POST',
+                url: '/approve',
+                data: formData,
+                success: function (response) {
+                    console.log(response);
+
+                    form.closest('tr').remove();
+
+                    const voornaam = form.find('input[name="voornaam"]').val();
+                    const achternaam = form.find('input[name="achternaam"]').val();
+                    const telefoon = form.find('input[name="telefoon"]').val();
+                    const email = form.find('input[name="email"]').val();
+
+                    const newRow = $('<tr>').append(
+                        $('<td class="w-1/3 text-left py-3 px-4">').text(voornaam),
+                        $('<td class="w-1/3 text-left py-3 px-4">').text(achternaam),
+                        $('<td class="text-left py-3 px-4">').text(telefoon),
+                        $('<td class="text-left py-3 px-4">').text(email)
+                    );
+                    $('.ervaringsdeskundigen-table tbody').append(newRow);
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+
+    // Aanvragen halen
+    $(document).ready(function () {
+        let lastFetchedId = null;
+
+        function fetchLatestRequests() {
+            if ($('.aanvragen-table tr').length > 0) {
+                lastFetchedId = $('.aanvragen-table tr:last').attr('data-deskundige-id');
+            }
+
+            $.ajax({
+                url: '/get_latest_requests',
+                type: 'GET',
+                data: {lastFetchedId: lastFetchedId},
+                success: function (data) {
+                    updateAanvragen(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        function updateAanvragen(data) {
+            const aanvragenContainer = $('.aanvragen-table');
+
+            if (data.length === 0) {
+                return;
+            }
+
+            lastFetchedId = data[data.length - 1].id;
+
+            $.each(data, function (index, request) {
+                const newRow = $('<tr>').append(
+                    $('<td class="w-1/3 text-left py-3 px-4">').text(request.voornaam),
+                    $('<td class="w-1/3 text-left py-3 px-4">').text(request.achternaam),
+                    $('<td class="text-left py-3 px-4">').text("Nog niet goedgekeurd"),
+                    $('<td class="text-left py-3 px-4">').append(
+                        $('<form class="approve-form">').attr('method', 'post').append(
+                            $('<input>').attr('type', 'hidden').attr('name', 'voornaam').val(request.voornaam),
+                            $('<input>').attr('type', 'hidden').attr('name', 'achternaam').val(request.achternaam),
+                            $('<button>').attr('type', 'button').addClass('approve-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded').text('Goedkeuren')
+                        )
+                    )
+                );
+                newRow.attr('data-deskundige-id', request.id);
+                aanvragenContainer.append(newRow);
+            });
+        }
+
+        setInterval(fetchLatestRequests, 5000);
+    });
+
+    function updateClock() {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        document.getElementById('clock').textContent = `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+    }
+
+    function updateDate() {
+        const now = new Date();
+        const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+        document.getElementById('current-date').textContent = now.toLocaleDateString('nl-NL', options);
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+    updateDate();
+</script>
+<script src="../static/assets/js/snake-game.js"></script>
+
+{% endblock %}
